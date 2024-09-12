@@ -31,13 +31,15 @@ describe("contracts/Registry", function() {
     const forwarder = this.forwarder.connect(relayer);
     const registry = this.registry;
 
-    // const signerPk = '0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a'
+    const signerPk = '0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a'
 
-    const request = await signMetaTxRequest(signer.provider, forwarder, {
+    const request = await signMetaTxRequest(signerPk, forwarder, {
       from: signer.address,
       to: registry.address,
       data: registry.interface.encodeFunctionData('register', ['meta-txs']),
     });
+
+    console.log(request.signature);
     
     await forwarder.execute(request).then(tx => tx.wait());
 
